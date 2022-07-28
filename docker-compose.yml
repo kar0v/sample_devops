@@ -45,9 +45,12 @@ services:
     # ports:
     #   - 9090:80
     network_mode: host
+    depends_on:
+      - mysql
+      - mongo
 
   php-dev:
-    build: ./build/php/Dockerfile
+    build: ./build/php/
     profiles: ["dev"]
     volumes:
       - php:/var/www/html
@@ -56,6 +59,17 @@ services:
     # ports:
     #   - 9090:80
     network_mode: host
+    depends_on:
+      - mysql
+      - mongo
+
+  python:
+    build: ./build/python/
+    network_mode: host
+    depends_on:
+      - mysql
+      - mongo
+      
 secrets:
   db_password:
     file: ./secrets/mysql-pass
