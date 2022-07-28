@@ -1,0 +1,75 @@
+services:
+  mysql:
+    image: mysql:5.7.39
+    restart: always
+    # ports:
+    #   - '3306:3306'
+    environment:
+      MYSQL_DATABASE_FILE: /run/secrets/db_database
+      MYSQL_USER_FILE: /run/secrets/db_username
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_pass
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./sources/mysql/mysqlsampledatabase.sql:/docker-entrypoint-initdb.d/init.sql
+    secrets:
+      - db_password
+      - db_username
+      - db_database
+      - db_root_pass
+    network_mode: host
+
+  mongo:
+    image: mongo:4.4.6
+    restart: "unless-stopped"
+    # ports:
+    #   - '27017:27017'
+    environment: # Not working with secrets. Error. 
+      MONGO_INITDB_ROOT_USERNAME: kairos
+      MONGO_INITDB_ROOT_PASSWORD: T8AuMw1ak4LBp9enDUZK
+    volumes:
+      - mongodb:/data/db
+      - ./sources/mongodb/:/data/mongo
+      - ./sources/mongodb/init.sh:/docker-entrypoint-initdb.d/init.sh
+    network_mode: host
+
+  php-prod:
+    build: ./build/php/
+    profiles: ["prod"]
+    volumes:
+      - php:/var/www/html
+      - ./sources/php/php.ini.prod:/usr/local/etc/php/php.ini
+      - ./sources/php/index.php:/var/www/html/index.php
+    # ports:
+    #   - 9090:80
+    network_mode: host
+
+  php-dev:
+    build: ./build/php/Dockerfile
+    profiles: ["dev"]
+    volumes:
+      - php:/var/www/html
+      - ./sources/php/php.ini.dev:/usr/local/etc/php/php.ini
+      - ./sources/php/index.php:/var/www/html/index.php
+    # ports:
+    #   - 9090:80
+    network_mode: host
+secrets:
+  db_password:
+    file: ./secrets/mysql-pass
+  db_username:
+    file: ./secrets/mysql-user
+  db_database:
+    file: ./secrets/mysql-db
+  db_root_pass:
+    file: ./secrets/mysql-root-pass
+
+volumes:
+  mysql:
+    driver: local
+  mongodb:
+    driver: local
+  php:
+    driver: local
