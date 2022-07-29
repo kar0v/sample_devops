@@ -8,10 +8,7 @@ This is a sample repository made to showcase different setup in docker environme
 
 `docker-compose --profile prod up -d` for the production environment with xdebug turned on <br>
 `docker-compose --profile dev up -d` for the dev environment with xdebug turned off. <br>
-<<<<<<< HEAD
-=======
-`docker-compose --profile python up -d` an example with python instead of php (logs only). <br>
->>>>>>> 59d991722f8dc6ebb7b4fd3a9ce9e8f83d3a6c4e
+
 #### Windows:
 
 ## Note:
