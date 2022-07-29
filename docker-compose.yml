@@ -62,14 +62,6 @@ services:
     depends_on:
       - mysql
       - mongo
-
-  python:
-    build: ./build/python/
-    profiles: ["python"]
-    network_mode: host
-    depends_on:
-      - mysql
-      - mongo
       
 secrets:
   db_password:
