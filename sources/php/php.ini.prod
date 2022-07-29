@@ -1916,5 +1916,13 @@ ldap.max_links = -1
 ; Local Variables:
 ; tab-width: 4
 ; End:
-zend_extension=/usr/lib/php/20151012/xdebug.so
 
+[xdebug]
+zend_extension=/usr/lib/php/20151012/xdebug.so
+xdebug.mode=debug
+xdebug.remote_enable = on
+xdebug.profiler_enable = on
+xdebug.profiler_enable_trigger = on
+xdebug.profiler_output_name = profiler.log
+xdebug.profiler_output_dir = "/var/log/"
+xdebug.show_local_vars = 0

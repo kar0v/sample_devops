@@ -65,6 +65,7 @@ services:
 
   python:
     build: ./build/python/
+    profiles: ["python"]
     network_mode: host
     depends_on:
       - mysql
