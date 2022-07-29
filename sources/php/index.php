@@ -48,20 +48,30 @@ $conn->close();
 
 echo "<h3> Here is result of the Mongodb query: </h3>";
 
-$conn = new MongoClient("mongodb://kairos:T8AuMw1ak4LBp9enDUZK@127.0.0.1:27017/mongo");
-echo "Connection to database successfully";
- 
-// select a database
-$db = $m->mongo;
-echo "Database mongo selected";
-$collection = $db->samples_pokemon;
-echo "Collection selected succsessfully";
-$cursor = $collection->find();
-// iterate cursor to display title of documents
- 
+# constructing a to a remote server and querry and limiting the result to the latest 3 results
+
+$username ="kairos";
+$password = "T8AuMw1ak4LBp9enDUZK";
+
+$manager = new MongoDB\Driver\Manager("mongodb://127.0.0.1/",
+     array("username" => $username, "password" => $password )
+    );   
+
+# setting your options and filter
+$filter  = ['id' => ['$gt' => 120]];
+$options = ['sort'=>array('_id'=>-1),'limit'=>20]; # limit -1 from newest to oldest
+
+#constructing the querry
+$query = new MongoDB\Driver\Query($filter, $options);
+
+#executing
+$cursor = $manager->executeQuery('mongo.samples_pokemon', $query);
+
 foreach ($cursor as $document) {
-   echo $document["title"] . "\n";
+    //var_dump($document);
+    print_r($document);
 }
+
 
 ?>
 

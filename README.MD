@@ -7,19 +7,18 @@ This is a sample repository made to showcase different setup in docker environme
 #### Linux/MacOS: 
 
 `docker-compose --profile prod up -d` for the production environment with xdebug turned on <br>
-`docker-compose --profile prod up -d` for the dev environment with xdebug turned off. <br>
+`docker-compose --profile dev up -d` for the dev environment with xdebug turned off. <br>
+`docker-compose --profile dev up -d` an example with python instead of php (logs only). <br>
 #### Windows:
 
 ## Note:
-As I am not a PHP programmer I was unable to create the proper .php files in sources/php/*.php. If you are going to use this, do create your own PHP scripts to test with mongodb & mysql and add them in the docker-compose file as a volume/directory.  <br><br>
-This is why I've created **a separate python container** that runs a script, which queries both databases. You can view the logs for the container to see the successful connection:
-`docker logs netea_python_1`
+As I did not have much experience with PHP, I created the containers at first, but could not create the proper functions and connections.  <br><br>
+This is why I've created a separate python container that runs a script, which queries both databases. The logs of the container can be viewed with `docker logs sample_devops_python_1`. This is not required at the moment, as I have invested more time into this and the webpage is now working. 
 
 
 ## TO DO:
 
-- Write a flask app that queries the database and shows it on a webpage.
-- Disable the php service. 
+- Write a flask app that queries the database and shows it on a webpage. (show the same results in python)
 - Push images to registry
 - Create a helmchart to deploy on k8s. 
   - Update secrets for mongodb before building the image or use the two-step building approach. 
