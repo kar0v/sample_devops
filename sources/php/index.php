@@ -14,9 +14,9 @@ h1, p, div, h2, h3, h4 {text-align: center;}
 <body>
 
 <?php
-$servername = "127.0.0.1";
-$username = "ezekiel";
-$password = "3VpNd2BEnhkVrHd5DYh";
+$servername = "mysql";
+$username = "root";
+$password = "UdxHGXatiHLiZmu1C71";
 $dbname = "classicmodels";
 $name = "Netea";
 
@@ -53,7 +53,7 @@ echo "<h3> Here is result of the Mongodb query: </h3>";
 $username ="kairos";
 $password = "T8AuMw1ak4LBp9enDUZK";
 
-$manager = new MongoDB\Driver\Manager("mongodb://127.0.0.1/",
+$manager = new MongoDB\Driver\Manager("mongodb://mongo/",
      array("username" => $username, "password" => $password )
     );   
 

@@ -1,9 +1,46 @@
 services:
+  php-prod:
+    build: ./build/php/
+    profiles: ["prod"]
+    volumes:
+      - php:/var/www/html
+      - ./sources/php/php.ini.prod:/usr/local/etc/php/php.ini
+      - ./sources/php/index.php:/var/www/html/index.php
+    ports:
+      - '127.0.0.1:80:80'
+    depends_on:
+      - mysql
+      - mongo
+    links: 
+      - mysql
+      - mongo
+    networks:
+      - local
+    
+  php-dev:
+    build: ./build/php/
+    profiles: ["dev"]
+    volumes:
+      - php:/var/www/html
+      - ./sources/php/php.ini.dev:/usr/local/etc/php/php.ini
+      - ./sources/php/index.php:/var/www/html/index.php
+    ports:
+      - '127.0.0.1:80:80'
+    depends_on:
+      - mysql
+      - mongo
+    links:
+      - mysql
+      - mongo
+    networks:
+      - local
+
+
   mysql:
     image: mysql:5.7.39
     restart: always
-    # ports:
-    #   - '3306:3306'
+    ports:
+      - '127.0.0.1:3306:3306'
     environment:
       MYSQL_DATABASE_FILE: /run/secrets/db_database
       MYSQL_USER_FILE: /run/secrets/db_username
@@ -19,13 +56,15 @@ services:
       - db_username
       - db_database
       - db_root_pass
-    network_mode: host
+    networks:
+      - local
+
 
   mongo:
     image: mongo:4.4.6
     restart: "unless-stopped"
-    # ports:
-    #   - '27017:27017'
+    ports:
+      - '127.0.0.1:27017:27017'
     environment: # Not working with secrets. Error. 
       MONGO_INITDB_ROOT_USERNAME: kairos
       MONGO_INITDB_ROOT_PASSWORD: T8AuMw1ak4LBp9enDUZK
@@ -33,35 +72,7 @@ services:
       - mongodb:/data/db
       - ./sources/mongodb/:/data/mongo
       - ./sources/mongodb/init.sh:/docker-entrypoint-initdb.d/init.sh
-    network_mode: host
-
-  php-prod:
-    build: ./build/php/
-    profiles: ["prod"]
-    volumes:
-      - php:/var/www/html
-      - ./sources/php/php.ini.prod:/usr/local/etc/php/php.ini
-      - ./sources/php/index.php:/var/www/html/index.php
-    # ports:
-    #   - 9090:80
-    network_mode: host
-    depends_on:
-      - mysql
-      - mongo
-
-  php-dev:
-    build: ./build/php/
-    profiles: ["dev"]
-    volumes:
-      - php:/var/www/html
-      - ./sources/php/php.ini.dev:/usr/local/etc/php/php.ini
-      - ./sources/php/index.php:/var/www/html/index.php
-    # ports:
-    #   - 9090:80
-    network_mode: host
-    depends_on:
-      - mysql
-      - mongo
+    network_mode: bridge
       
 secrets:
   db_password:
@@ -80,3 +91,7 @@ volumes:
     driver: local
   php:
     driver: local
+
+networks:
+  local:
+    driver: bridge
