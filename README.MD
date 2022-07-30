@@ -8,6 +8,8 @@ This is a sample repository made to showcase different setup in docker environme
 
 `docker-compose --profile prod up -d` for the production environment with xdebug turned on <br>
 `docker-compose --profile dev up -d` for the dev environment with xdebug turned off. <br>
+<br>
+Then open a browser window and type in the addressbar either `localhost` or `127.0.0.1`
 
 #### Windows: 
 Check the Windows branch
